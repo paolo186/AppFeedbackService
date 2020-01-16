@@ -2,14 +2,15 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
+// Model Classes
+require('./models/User');
+
 // Passport JS Configuration
 require('./services/passport');
 
 // OAuth Routes
 require('./routes/authRoutes')(app);
 
-// Model Classes
-require('./models/User');
 
 // connect to MongoDB
 mongoose.connect(
