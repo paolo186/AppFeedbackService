@@ -1,5 +1,10 @@
 const passport = require('passport');
-
+/*
+    NOTE: When using PassportJS for OAuth 2.0, two routes are required.
+    User navigates to /auth/google to start the process.
+    Identity Provider (e.g. Google) will redirect successful logins to 
+    /auth/google/callback (this is registered in Google API's redirect URI). 
+*/
 module.exports = (app) => {
     app.get('/', (req, res) => {
         res.send("Welcome to isurveyu");
@@ -19,6 +24,10 @@ module.exports = (app) => {
         '/auth/google/callback', 
         passport.authenticate('google'),
     ); 
+
+    app.get('/api/current_user', (req, res) => {
+        res.send(req.user);
+    })
 }
 
 
