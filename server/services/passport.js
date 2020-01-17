@@ -6,12 +6,14 @@ const mongoose = require('mongoose');
 const User = mongoose.model('users');
 
 // after user login => used for set-cookie sent back to client to be used for future server requests 
+// also sets session property in request object with user.id;
+// 1st arg is based on what was returned in PassportStrategy's auth callback
 passport.serializeUser((user, done) => {
   // user.id is MongoDB's auto-generated ID for the user
   done(null, user.id); // 1st arg is for errors
 });
 
-// 1st arg in callback is whatever object we serialized above (in this case, user.id)
+// checks session property in request object and that'll be the 1st arg (in this case user.id)
 passport.deserializeUser((id, done) => {
   User.findById(id)
   .then(user => {
@@ -39,7 +41,7 @@ passport.use(
         .then((existingUser) => {
           if (existingUser) {
             // tell PassportJS to continue auth process
-            done(null, existingUser); // 1st arg is for errors
+            done(null, existingUser); // 1st arg is for errors => controls is passed to serializeUser()
           }
           else {
             // creates and saves this new User object to MongoDB

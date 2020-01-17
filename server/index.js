@@ -12,7 +12,7 @@ require('./models/User');
 // Passport JS Configuration
 require('./services/passport');
 
-// enable cookies in our application (it also extracts cookie data)
+// enable session cookies in our application (it also extracts cookie data)
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000; // in milliseconds
 app.use(
     cookieSession({
@@ -22,16 +22,12 @@ app.use(
 );
 
 /* 
-    register to passport to use cookie session registered in our application;
+    register to passport to use session (to understand further, check out PassportJS's documentation on Authentication);
     After the user has signed in, Passport will then pull user id out of 
     cookie data then pass data into deserializeUser() in passport.js 
 */
- app.use(passport.initialize());
+app.use(passport.initialize());
 app.use(passport.session());
-
-// OAuth Routes
-require('./routes/authRoutes')(app);
-
 
 // connect to MongoDB
 mongoose.connect(
@@ -41,6 +37,9 @@ mongoose.connect(
         useUnifiedTopology: true
     },
 );
+
+// OAuth Routes
+require('./routes/authRoutes')(app);
 
 // start server
 const PORT = process.env.PORT || 5000;

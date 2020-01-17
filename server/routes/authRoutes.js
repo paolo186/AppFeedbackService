@@ -25,6 +25,11 @@ module.exports = (app) => {
         passport.authenticate('google'),
     ); 
 
+    app.get('/logout', (req, res) => {
+        req.logout();
+        res.send("You're logged out.");
+    });
+
     app.get('/api/current_user', (req, res) => {
         res.send(req.user);
     })
