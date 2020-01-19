@@ -3,3 +3,4 @@
 
 # node modules (dependencies)
 node_modules/
+npm-debug.log

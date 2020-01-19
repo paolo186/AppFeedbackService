@@ -32,6 +32,16 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: '/auth/google/callback',
+      /* 
+        since our app is deployed in Heroku, it goes through Heroku proxy
+        resulting to GoogleStrategy changing our scheme from HTTPS to HTTP.
+        This is important to note since our app is deployed with HTTPS and 
+        Google API's redirect uri is using HTTPS scheme (i.e. there will be redirect uri mismatch).
+        A quick hack is to set proxy to true which tells Google Strategy to not 
+        change the scheme if the request went through a proxy. Do note that this may
+        pose a security issue with other applications.
+      */
+      proxy: true, 
     }, 
     // this callback function gets called after Passport exchanges code for an accessToken
     (accessToken, refreshToken, profile, done) => { 
