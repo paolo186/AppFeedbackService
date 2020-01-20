@@ -17,7 +17,7 @@ module.exports = (app) => {
           scope: ['profile', 'email']
         })
     );
-    
+
     // registered redirect URI (callback) to exchange code for an accessToken;
     // calls callback function registered in Google Strategy (2nd argument)
     app.get(
@@ -31,6 +31,7 @@ module.exports = (app) => {
     });
 
     app.get('/api/current_user', (req, res) => {
+        console.log("user=", req.user)
         res.send(req.user);
     })
 }

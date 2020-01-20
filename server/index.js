@@ -12,6 +12,15 @@ require('./models/User');
 // Passport JS Configuration
 require('./services/passport');
 
+// connect to MongoDB
+mongoose.connect(
+    process.env.MONGO_URI,
+    { 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true
+    },
+);
+
 // enable session cookies in our application (it also extracts cookie data)
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000; // in milliseconds
 app.use(
@@ -29,14 +38,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// connect to MongoDB
-mongoose.connect(
-    process.env.MONGO_URI,
-    { 
-        useNewUrlParser: true, 
-        useUnifiedTopology: true
-    },
-);
+
 
 // OAuth Routes
 require('./routes/authRoutes')(app);
